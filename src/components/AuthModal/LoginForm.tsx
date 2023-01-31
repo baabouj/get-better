@@ -1,14 +1,12 @@
 import { useState } from "react";
-
-import Input from "../Input";
-
-// import { useUser } from "../hooks/useUser";
-
 import { IoArrowBackOutline } from "react-icons/io5";
+
+import { validate } from "$helpers";
+import { Login, loginSchema } from "$utils/validation";
+import { useAuth } from "$hooks";
+
 import { AuthModalsProps } from "./auth-modals-props.type";
-import { validate } from "helpers";
-import { Login, loginSchema } from "utils/validation";
-import { useAuth } from "hooks";
+import Input from "../Input";
 
 const LoginForm: React.FC<AuthModalsProps> = ({ onClose, onLinkClicked }) => {
   const { login } = useAuth();
@@ -16,23 +14,16 @@ const LoginForm: React.FC<AuthModalsProps> = ({ onClose, onLinkClicked }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-
-  const [errors, setErrors] = useState({ email: "", password: "" });
-
-  //   const [_, setUser] = useUser();
+  const [error, setError] = useState("");
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { data, errors } = validate<Login>({ email, password }, loginSchema);
 
-    setPasswordError("");
-    setEmailError("");
+    setError("");
     if (!data) {
-      errors.email && setEmailError(errors.email);
-      errors.password && setPasswordError(errors.password);
+      setError(errors[0]);
 
       return;
     }
@@ -41,9 +32,7 @@ const LoginForm: React.FC<AuthModalsProps> = ({ onClose, onLinkClicked }) => {
       await login(data);
       onClose();
     } catch (error) {
-      console.log("OH NOO!");
-      setPasswordError("invalid email or password");
-      setEmailError("invalid email or password");
+      setError("invalid email or password");
     }
   };
 
@@ -67,13 +56,13 @@ const LoginForm: React.FC<AuthModalsProps> = ({ onClose, onLinkClicked }) => {
           placeholder="Enter email address"
           type="email"
           onChange={({ target: { value } }) => setEmail(value)}
-          error={emailError}
+          error={error}
         />
         <Input
           placeholder="Enter password"
           type="password"
           onChange={({ target: { value } }) => setPassword(value)}
-          error={passwordError}
+          error={error}
         />
         <button
           type="submit"

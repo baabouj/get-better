@@ -6,8 +6,7 @@ import jwt from "jsonwebtoken";
 
 import { prisma } from "$lib/prisma";
 import { removeTokenCookie, setTokenCookie } from "$lib/cookies";
-import { auth, catchAsync, validate } from "$helpers";
-import { Login, loginSchema } from "$utils/validation";
+import { auth, catchAsync } from "$helpers";
 import { ApiException } from "$exceptions/ApiException";
 
 export default catchAsync(async (req: NextApiRequest, res: NextApiResponse) => {

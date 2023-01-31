@@ -2,14 +2,12 @@ import { useState } from "react";
 
 import Input from "../Input";
 
-// import { useUser } from "../hooks/useUser";
-
 import { IoArrowBackOutline } from "react-icons/io5";
 
 import { AuthModalsProps } from "./auth-modals-props.type";
-import { useAuth } from "hooks";
-import { validate } from "helpers";
-import { Signup, signupSchema } from "utils/validation";
+import { useAuth } from "$hooks";
+import { validate } from "$helpers";
+import { Signup, signupSchema } from "$utils/validation";
 
 const SignupForm: React.FC<AuthModalsProps> = ({ onClose, onLinkClicked }) => {
   const { signup } = useAuth();
@@ -18,8 +16,7 @@ const SignupForm: React.FC<AuthModalsProps> = ({ onClose, onLinkClicked }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [errors, setErrors] = useState({ name: "", email: "", password: "" });
-  //   const [_, setUser] = useUser();
+  const [error, setError] = useState("");
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,9 +26,9 @@ const SignupForm: React.FC<AuthModalsProps> = ({ onClose, onLinkClicked }) => {
       signupSchema
     );
 
-    setErrors({ name: "", email: "", password: "" });
+    setError("");
     if (!data) {
-      setErrors((prev) => ({ ...prev, ...errors }));
+      setError(errors[0]);
 
       return;
     }
@@ -40,7 +37,7 @@ const SignupForm: React.FC<AuthModalsProps> = ({ onClose, onLinkClicked }) => {
       await signup(data);
       onClose();
     } catch (error) {
-      console.log("OH NOO!");
+      console.log(error);
     }
   };
 
@@ -66,19 +63,19 @@ const SignupForm: React.FC<AuthModalsProps> = ({ onClose, onLinkClicked }) => {
           placeholder="Enter full name"
           type="text"
           onChange={({ target: { value } }) => setName(value)}
-          error={errors.name}
+          error={error}
         />
         <Input
           placeholder="Enter email address"
           type="email"
           onChange={({ target: { value } }) => setEmail(value)}
-          error={errors.email}
+          error={error}
         />
         <Input
           placeholder="Enter password"
           type="password"
           onChange={({ target: { value } }) => setPassword(value)}
-          error={errors.password}
+          error={error}
         />
         <button
           type="submit"

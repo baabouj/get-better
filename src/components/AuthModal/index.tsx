@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import Modal from "../Modal";
 
 import LoginForm from "./LoginForm";
@@ -14,8 +12,6 @@ const AuthModal = ({
   open: (modal: "login" | "signup") => void;
   close: () => void;
 }) => {
-  // const [openedForm, setOpenedForm] = useState(openedModal);
-
   return (
     <Modal visible={!!openedModal} onClose={close}>
       {openedModal === "login" && (

@@ -2,10 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import httpStatus from "http-status";
 
-import { prisma } from "lib/prisma";
-import { auth, catchAsync, validate } from "helpers";
-import { Appointment, scheduleAppontmentSchema } from "utils/validation";
-import { ApiException } from "exceptions/ApiException";
+import { prisma } from "$lib/prisma";
+import { auth, catchAsync, validate } from "$helpers";
+import { Appointment, scheduleAppontmentSchema } from "$utils/validation";
+import { ApiException } from "$exceptions/ApiException";
 
 export default catchAsync(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST")
